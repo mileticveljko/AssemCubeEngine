@@ -7,6 +7,12 @@
     <Filter Include="Core\Events">
       <UniqueIdentifier>{52201B74-BED5-9369-47CA-8D40B37E8A6D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Platform">
+      <UniqueIdentifier>{42848203-AE44-FE39-777F-47B7E3FE4216}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Platform\Windows">
+      <UniqueIdentifier>{7C50E91D-E8BC-A418-B1B0-3C761DDCC680}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AssemCube.h" />
@@ -34,6 +40,12 @@
     <ClInclude Include="src\Core\Log.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Core\Platform\Windows\WindowsWindow.h">
+      <Filter>Core\Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Window.h">
+      <Filter>Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\acpch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -42,6 +54,9 @@
     </ClCompile>
     <ClCompile Include="src\Core\Log.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Core\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\acpch.cpp" />
   </ItemGroup>

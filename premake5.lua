@@ -11,6 +11,12 @@ workspace "AssemCubeEngine"
 
 outputDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- Include directories relative to root folder (solution directory)
+IncludeDir = {}
+IncludeDir["GLFW"] = "AssemCubeEngine/vendor/GL/include"
+
+include "AssemCubeEngine/vendor/GL"
+
 project "AssemCubeEngine"
     location "AssemCubeEngine"
     kind "sharedLib"
@@ -32,9 +38,16 @@ project "AssemCubeEngine"
 
     includedirs
     {
+        "%{prj.name}/src",
         "%{prj.name}/vendor/spdlog/include",
-        "%{prj.name}/src"
+		"%{IncludeDir.GLFW}"
     }
+
+    links 
+	{ 
+		"GLFW",
+		"opengl32.lib"
+	}
 
     filter "system:windows"
         staticruntime "on"
