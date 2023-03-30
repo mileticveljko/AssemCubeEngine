@@ -25,6 +25,7 @@ public:
 	App() 
 	{
 		PushLayer(new ExampleLayer());
+		PushOverlay(new ac::ImGuiLayer());
 	}
 	~App() {}
 };

@@ -15,9 +15,11 @@ outputDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "AssemCubeEngine/vendor/GLFW_V/include"
 IncludeDir["glad"] = "AssemCubeEngine/vendor/glad/include"
+IncludeDir["ImGui"] = "AssemCubeEngine/vendor/imgui"
 
 include "AssemCubeEngine/vendor/GLFW_V"
 include "AssemCubeEngine/vendor/glad"
+include "AssemCubeEngine/vendor/imgui"
 
 project "AssemCubeEngine"
     location "AssemCubeEngine"
@@ -43,13 +45,15 @@ project "AssemCubeEngine"
         "%{prj.name}/src",
         "%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.glad}"
+		"%{IncludeDir.glad}",
+        "%{IncludeDir.ImGui}"
     }
 
     links 
 	{ 
 		"GLFW",
         "glad",
+        "ImGui",
 		"opengl32.lib"
 	}
 
