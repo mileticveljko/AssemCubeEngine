@@ -21,6 +21,9 @@ project "AssemCubeEngine"
     targetdir("bin/" .. outputDir .. "/%{prj.name}")
     objdir("bin-int/" .. outputDir .. "/%{prj.name}")
 
+    pchheader "acpch.h"
+    pchsource "AssemCubeEngine/src/acpch.cpp"
+
     files
     {
         "%{prj.name}/src/**.h",

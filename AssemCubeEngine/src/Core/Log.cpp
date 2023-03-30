@@ -1,4 +1,7 @@
+#include "acpch.h"
+
 #include "Log.h"
+
 
 namespace ac
 {
