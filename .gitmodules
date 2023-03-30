@@ -1,3 +1,6 @@
 [submodule "AssemCubeEngine/vendor/GL"]
 	path = AssemCubeEngine/vendor/GL
 	url = https://github.com/glfw/glfw
+[submodule "AssemCubeEngine/vendor/GLFW_V"]
+	path = AssemCubeEngine/vendor/GLFW_V
+	url = https://github.com/mileticveljko/glfw

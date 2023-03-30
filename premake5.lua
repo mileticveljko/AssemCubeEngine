@@ -13,9 +13,9 @@ outputDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
-IncludeDir["GLFW"] = "AssemCubeEngine/vendor/GL/include"
+IncludeDir["GLFW"] = "AssemCubeEngine/vendor/GLFW_V/include"
 
-include "AssemCubeEngine/vendor/GL"
+include "AssemCubeEngine/vendor/GLFW_V"
 
 project "AssemCubeEngine"
     location "AssemCubeEngine"
