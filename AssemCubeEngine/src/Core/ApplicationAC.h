@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Core.h"
-#include "Events/Event.h"
-#include "Core/Events/ApplicationEvent.h"
 
 #include "Window.h"
+#include "Core/LayerStack.h"
+#include "Events/Event.h"
+#include "Core/Events/ApplicationEvent.h"
 
 
 namespace ac {
@@ -16,6 +17,10 @@ namespace ac {
 		virtual ~Application();
 
 		void OnEvent(Event& e);
+
+		void PushLayer(Layer* layer);
+		void PushOverlay(Layer* layer);
+		
 		void Run();
 
 	private:
@@ -23,6 +28,7 @@ namespace ac {
 
 		std::unique_ptr<Window> m_Window;
 		bool m_Running = true;
+		LayerStack m_LayerStack;
 	};
 
 	// To be defined in a cliant

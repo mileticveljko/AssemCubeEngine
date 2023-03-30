@@ -66,17 +66,20 @@ project "AssemCubeEngine"
 
     filter "configurations:Debug"
         defines "AC_DEBUG"
+        staticruntime "off"
         runtime "Debug"
         symbols "on"
 
     filter "configurations:Release"
         defines "AC_RELEASE"
+        staticruntime "off"
         runtime "Release"
         optimize "on"
 
     filter "configurations:Dist"
         defines "AC_DIST"
         runtime "Release"
+        staticruntime "off"
         optimize "on"
         
 project "AssemCube"
