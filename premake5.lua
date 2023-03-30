@@ -14,8 +14,10 @@ outputDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["GLFW"] = "AssemCubeEngine/vendor/GLFW_V/include"
+IncludeDir["glad"] = "AssemCubeEngine/vendor/glad/include"
 
 include "AssemCubeEngine/vendor/GLFW_V"
+include "AssemCubeEngine/vendor/glad"
 
 project "AssemCubeEngine"
     location "AssemCubeEngine"
@@ -40,12 +42,14 @@ project "AssemCubeEngine"
     {
         "%{prj.name}/src",
         "%{prj.name}/vendor/spdlog/include",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.glad}"
     }
 
     links 
 	{ 
 		"GLFW",
+        "glad",
 		"opengl32.lib"
 	}
 
@@ -56,7 +60,8 @@ project "AssemCubeEngine"
         defines 
         {
             "AC_PLATFORM_WINDOWS",
-            "AC_BUILD_DLL"
+            "AC_BUILD_DLL",
+            "GLFW_INCLUDE_NONE"
         }
 
         postbuildcommands
