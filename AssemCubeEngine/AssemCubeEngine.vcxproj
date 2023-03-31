@@ -157,6 +157,8 @@
     <ClInclude Include="src\Core\MouseButtonCodes.h" />
     <ClInclude Include="src\Core\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Core\Platform\Windows\WindowsWindow.h" />
+    <ClInclude Include="src\Core\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\Core\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Core\Window.h" />
     <ClInclude Include="src\acpch.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
@@ -588,6 +590,7 @@
     <ClCompile Include="src\acpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Core\Platform\OpenGL\OpenGLContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW_V\GLFW.vcxproj">
