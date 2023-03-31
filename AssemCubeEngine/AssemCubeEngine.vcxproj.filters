@@ -46,6 +46,9 @@
     <ClInclude Include="src\Core\ImGui\ImGuiOpenGLRenderer.h">
       <Filter>Core\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="src\Core\Input.h">
+      <Filter>Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Core\Layer.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -54,6 +57,9 @@
     </ClInclude>
     <ClInclude Include="src\Core\Log.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Platform\Windows\WindowsInput.h">
+      <Filter>Core\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Core\Platform\Windows\WindowsWindow.h">
       <Filter>Core\Platform\Windows</Filter>
@@ -81,6 +87,9 @@
     </ClCompile>
     <ClCompile Include="src\Core\Log.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Platform\Windows\WindowsInput.cpp">
+      <Filter>Core\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Platform\Windows\WindowsWindow.cpp">
       <Filter>Core\Platform\Windows</Filter>

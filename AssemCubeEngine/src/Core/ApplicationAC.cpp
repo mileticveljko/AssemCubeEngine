@@ -4,6 +4,7 @@
 
 #include "Core/Events/ApplicationEvent.h"
 #include "Core/Log.h"
+#include "Core/Input.h"
 
 #include <glad/glad.h>
 
@@ -66,6 +67,10 @@ namespace ac {
 			
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
+
+
+			auto[x, y] = Input::GetMousePosition();
+			AC_CORE_TRACE("{0}, {1}", x, y);
 
 			m_Window->OnUpdate();
 		}
