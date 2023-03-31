@@ -68,6 +68,8 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="src\acpch.h" />
+    <ClInclude Include="src\Core\KeyCodes.h" />
+    <ClInclude Include="src\Core\MouseButtonCodes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\ApplicationAC.cpp">

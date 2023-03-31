@@ -10,12 +10,19 @@ public:
 
 	void OnUpdate() override
 	{
-		AC_INFO("ExampleLayer::Update");
+		if (ac::Input::IsKeyPressed(AC_KEY_TAB))
+			AC_TRACE("Tab key is pressed (poll)!");
 	}
 
 	void OnEvent(ac::Event& event) override
 	{
-		AC_TRACE("{0}", event);
+		if (event.GetEventType() == ac::EventType::KeyPressed)
+		{
+			ac::KeyPressedEvent& e = (ac::KeyPressedEvent&)event;
+			if (e.GetKeyCode() == AC_KEY_TAB)
+				AC_TRACE("Tab key is pressed (event)!");
+			AC_TRACE("{0}", (char)e.GetKeyCode());
+		}
 	}
 };
 
