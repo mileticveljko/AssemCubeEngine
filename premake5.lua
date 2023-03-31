@@ -16,6 +16,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "AssemCubeEngine/vendor/GLFW_V/include"
 IncludeDir["glad"] = "AssemCubeEngine/vendor/glad/include"
 IncludeDir["ImGui"] = "AssemCubeEngine/vendor/imgui"
+IncludeDir["glm"] = "AssemCubeEngine/vendor/glm"
 
 group "Dependencies"
     include "AssemCubeEngine/vendor/GLFW_V"
@@ -39,7 +40,9 @@ project "AssemCubeEngine"
     files
     {
         "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp"
+        "%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl"
     }
 
     includedirs
@@ -48,7 +51,8 @@ project "AssemCubeEngine"
         "%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.glad}",
-        "%{IncludeDir.ImGui}"
+        "%{IncludeDir.ImGui}",
+        "%{IncludeDir.glm}"
     }
 
     links 
@@ -112,7 +116,8 @@ project "AssemCube"
     includedirs
     {
         "AssemCubeEngine/vendor/spdlog/include",
-        "AssemCubeEngine/src"
+        "AssemCubeEngine/src",
+        "%{IncludeDir.glm}"
     }
 
     links

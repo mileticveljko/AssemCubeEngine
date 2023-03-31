@@ -7,3 +7,6 @@
 [submodule "AssemCubeEngine/vendor/imgui"]
 	path = AssemCubeEngine/vendor/imgui
 	url = https://github.com/mileticveljko/imgui
+[submodule "AssemCubeEngine/vendor/glm"]
+	path = AssemCubeEngine/vendor/glm
+	url = https://github.com/g-truc/glm
