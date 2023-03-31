@@ -69,9 +69,6 @@
     <ClInclude Include="src\Core\ImGui\ImGuiLayer.h">
       <Filter>src\Core\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="src\Core\ImGui\ImGuiOpenGLRenderer.h">
-      <Filter>src\Core\ImGui</Filter>
-    </ClInclude>
     <ClInclude Include="src\Core\Input.h">
       <Filter>src\Core</Filter>
     </ClInclude>
@@ -1355,10 +1352,10 @@
     <ClCompile Include="src\Core\ApplicationAC.cpp">
       <Filter>src\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\ImGui\ImGuiLayer.cpp">
+    <ClCompile Include="src\Core\ImGui\ImGuiBuild.cpp">
       <Filter>src\Core\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\ImGui\ImGuiOpenGLRenderer.cpp">
+    <ClCompile Include="src\Core\ImGui\ImGuiLayer.cpp">
       <Filter>src\Core\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\Layer.cpp">

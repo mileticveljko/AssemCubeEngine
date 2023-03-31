@@ -7,6 +7,7 @@
 #include "Events/Event.h"
 #include "Core/Events/ApplicationEvent.h"
 
+#include "Core/ImGui/ImGuiLayer.h"
 
 namespace ac {
 
@@ -31,6 +32,7 @@ namespace ac {
 		bool OnWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 	private:

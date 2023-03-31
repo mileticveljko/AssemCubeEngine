@@ -1,5 +1,7 @@
 #include "AssemCube.h"
 
+#include "imgui_V/imgui.h"
+
 #include <glm/vec3.hpp> // glm::vec3
 #include <glm/vec4.hpp> // glm::vec4
 #include <glm/mat4x4.hpp> // glm::mat4
@@ -31,6 +33,14 @@ public:
 		if (ac::Input::IsKeyPressed(AC_KEY_TAB))
 			AC_TRACE("Tab key is pressed (poll)!");
 	}
+	/*
+	virtual void OnImGuiRender() override
+	{
+		ImGui::Begin("Test");
+		ImGui::Text("Hello World");
+		ImGui::End();
+	}
+	*/
 
 	void OnEvent(ac::Event& event) override
 	{
@@ -50,7 +60,7 @@ public:
 	App() 
 	{
 		PushLayer(new ExampleLayer());
-		PushOverlay(new ac::ImGuiLayer());
+
 	}
 	~App() {}
 };

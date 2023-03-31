@@ -15,13 +15,13 @@ outputDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "AssemCubeEngine/vendor/GLFW_V/include"
 IncludeDir["glad"] = "AssemCubeEngine/vendor/glad/include"
-IncludeDir["ImGui"] = "AssemCubeEngine/vendor/imgui"
+IncludeDir["ImGui"] = "AssemCubeEngine/vendor/imgui_V"
 IncludeDir["glm"] = "AssemCubeEngine/vendor/glm"
 
 group "Dependencies"
     include "AssemCubeEngine/vendor/GLFW_V"
     include "AssemCubeEngine/vendor/glad"
-    include "AssemCubeEngine/vendor/imgui"
+    include "AssemCubeEngine/vendor/imgui_V"
 group ""
 
 project "AssemCubeEngine"
@@ -117,6 +117,7 @@ project "AssemCube"
     {
         "AssemCubeEngine/vendor/spdlog/include",
         "AssemCubeEngine/src",
+        "AssemCubeEngine/vendor",
         "%{IncludeDir.glm}"
     }
 

@@ -4,9 +4,12 @@
 [submodule "AssemCubeEngine/vendor/GLFW_V"]
 	path = AssemCubeEngine/vendor/GLFW_V
 	url = https://github.com/mileticveljko/glfw
-[submodule "AssemCubeEngine/vendor/imgui"]
-	path = AssemCubeEngine/vendor/imgui
-	url = https://github.com/mileticveljko/imgui
 [submodule "AssemCubeEngine/vendor/glm"]
 	path = AssemCubeEngine/vendor/glm
 	url = https://github.com/g-truc/glm
+[submodule "AssemCubeEngine/vendor/imgui_V"]
+	path = AssemCubeEngine/vendor/imgui_V
+	url = https://github.com/mileticveljko/imgui
+[submodule "AssemCubeEngine/vendor/imgui_"]
+	path = AssemCubeEngine/vendor/imgui_
+	url = https://github.com/ocornut/imgui
