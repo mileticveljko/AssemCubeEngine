@@ -33,14 +33,13 @@ public:
 		if (ac::Input::IsKeyPressed(AC_KEY_TAB))
 			AC_TRACE("Tab key is pressed (poll)!");
 	}
-	/*
+
 	virtual void OnImGuiRender() override
 	{
 		ImGui::Begin("Test");
 		ImGui::Text("Hello World");
 		ImGui::End();
 	}
-	*/
 
 	void OnEvent(ac::Event& event) override
 	{

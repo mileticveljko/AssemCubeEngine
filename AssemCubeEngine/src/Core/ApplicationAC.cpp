@@ -64,7 +64,7 @@ namespace ac {
 	{
 		while (m_Running)
 		{
-			glClearColor(0.5, 0.7, 0, 1);
+			glClearColor(0.5f, 0.7f, 0.0f, 0.1f);
 			glClear(GL_COLOR_BUFFER_BIT);
 			
 			for (Layer* layer : m_LayerStack)

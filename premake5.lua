@@ -26,10 +26,10 @@ group ""
 
 project "AssemCubeEngine"
     location "AssemCubeEngine"
-    kind "sharedLib"
+    kind "StaticLib"
     language "C++"
     cppdialect "C++17"
-    staticruntime "off"
+    staticruntime "on"
 
     targetdir("bin/" .. outputDir .. "/%{prj.name}")
     objdir("bin-int/" .. outputDir .. "/%{prj.name}")
@@ -43,6 +43,11 @@ project "AssemCubeEngine"
         "%{prj.name}/src/**.cpp",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl"
+    }
+
+    defines 
+    {
+        "_CRT_SECURE_NO_WARNINGS"
     }
 
     includedirs
@@ -64,7 +69,6 @@ project "AssemCubeEngine"
 	}
 
     filter "system:windows"
-        staticruntime "on"
         systemversion "latest"
 
         defines 
@@ -74,27 +78,19 @@ project "AssemCubeEngine"
             "GLFW_INCLUDE_NONE"
         }
 
-        postbuildcommands
-        {
-            ("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputDir .. "/AssemCube/\"")
-        }
-
     filter "configurations:Debug"
         defines "AC_DEBUG"
-        staticruntime "off"
         runtime "Debug"
         symbols "on"
 
     filter "configurations:Release"
         defines "AC_RELEASE"
-        staticruntime "off"
         runtime "Release"
         optimize "on"
 
     filter "configurations:Dist"
         defines "AC_DIST"
         runtime "Release"
-        staticruntime "off"
         optimize "on"
         
 project "AssemCube"
@@ -102,7 +98,7 @@ project "AssemCube"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
-    staticruntime "off"
+    staticruntime "on"
 
     targetdir ("bin/" .. outputDir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputDir .. "/%{prj.name}")
@@ -137,14 +133,14 @@ project "AssemCube"
     filter "configurations:Debug"
         defines "AC_DEBUG"
         runtime "Debug"
-        symbols "On"
+        symbols "on"
 
     filter "configurations:Release"
         defines "AC_RELEASE"
         runtime "Release"
-        optimize "On"
+        optimize "on"
 
     filter "configurations:Dist"
         defines "AC_DIST"
         runtime "Release"
-        optimize "On"
+        optimize "on"
