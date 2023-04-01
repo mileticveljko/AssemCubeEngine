@@ -155,10 +155,14 @@
     <ClInclude Include="src\Core\LayerStack.h" />
     <ClInclude Include="src\Core\Log.h" />
     <ClInclude Include="src\Core\MouseButtonCodes.h" />
+    <ClInclude Include="src\Core\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Core\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Core\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Core\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Core\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\Core\Renderer\Buffer.h" />
+    <ClInclude Include="src\Core\Renderer\Renderer.h" />
+    <ClInclude Include="src\Core\Renderer\Shader.h" />
     <ClInclude Include="src\Core\Window.h" />
     <ClInclude Include="src\acpch.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
@@ -585,12 +589,16 @@
     <ClCompile Include="src\Core\Layer.cpp" />
     <ClCompile Include="src\Core\LayerStack.cpp" />
     <ClCompile Include="src\Core\Log.cpp" />
+    <ClCompile Include="src\Core\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Core\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Core\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\acpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Core\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\Core\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Core\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Core\Renderer\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW_V\GLFW.vcxproj">
