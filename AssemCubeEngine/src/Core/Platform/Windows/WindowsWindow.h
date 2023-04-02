@@ -29,6 +29,7 @@ namespace ac {
 		virtual void Shutdown();
 	private:
 		GLFWwindow* m_Window;
+		GLFWimage m_Icon[1];
 		GraphicsContext* m_Context;
 
 		struct WindowData

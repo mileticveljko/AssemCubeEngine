@@ -7,6 +7,8 @@
 
 #include "Core/Platform/OpenGL/OpenGLContext.h"
 
+#include "stb_image.h"
+
 namespace ac {
 
 	static bool s_GLFWInitialized = false;
@@ -50,7 +52,18 @@ namespace ac {
 		}
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+		/*
+		int width, height, channels;
+		unsigned char* pixels = stbi_load("resources/Ikonica.png", &width, &height, &channels, 0);
 
+		m_Icon[0].width = width;
+		m_Icon[0].height = height;
+		m_Icon[0].pixels = pixels;
+
+		glfwSetWindowIcon(m_Window, 1, m_Icon);
+
+		stbi_image_free(m_Icon[0].pixels);
+		*/
 		m_Context = new OpenGLContext(m_Window);
 		m_Context->Init();
 
