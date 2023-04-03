@@ -1,8 +1,12 @@
 #include "AssemCube.h"
 
+#include "Core/Platform/OpenGL/OpenGLShader.h"
+
 #include "imguiV/imgui.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 
 class ExampleLayer : public ac::Layer
 {
@@ -17,7 +21,7 @@ public:
 			 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 
-		std::shared_ptr<ac::VertexBuffer> vertexBuffer;
+		ac::Ref<ac::VertexBuffer> vertexBuffer;
 		vertexBuffer.reset(ac::VertexBuffer::Create(vertices, sizeof(vertices)));
 		ac::BufferLayout layout = {
 			{ ac::ShaderDataType::Float3, "a_Position" },
@@ -27,7 +31,7 @@ public:
 		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0, 1, 2 };
-		std::shared_ptr<ac::IndexBuffer> indexBuffer;
+		ac::Ref<ac::IndexBuffer> indexBuffer;
 		indexBuffer.reset(ac::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 		m_SquareVA.reset(ac::VertexArray::Create());
@@ -39,7 +43,7 @@ public:
 			-0.5f,  0.5f, 0.0f
 		};
 
-		std::shared_ptr<ac::VertexBuffer> squareVB;
+		ac::Ref<ac::VertexBuffer> squareVB;
 		squareVB.reset(ac::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 		squareVB->SetLayout({
 			{ ac::ShaderDataType::Float3, "a_Position" }
@@ -47,7 +51,7 @@ public:
 		m_SquareVA->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		std::shared_ptr<ac::IndexBuffer> squareIB;
+		ac::Ref<ac::IndexBuffer> squareIB;
 		squareIB.reset(ac::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 		m_SquareVA->SetIndexBuffer(squareIB);
 
@@ -86,7 +90,7 @@ public:
 			}
 		)";
 
-		m_Shader.reset(new ac::Shader(vertexSrc, fragmentSrc));
+		m_Shader.reset(ac::Shader::Create(vertexSrc, fragmentSrc));
 
 		std::string flatColorShaderVertexSrc = R"(
 			#version 330 core
@@ -110,15 +114,15 @@ public:
 			layout(location = 0) out vec4 color;
 			in vec3 v_Position;
 
-			uniform vec4 u_Color;
+			uniform vec3 u_Color;
 
 			void main()
 			{
-				color = u_Color;
+				color = vec4(u_Color , 1.0f);
 			}
 		)";
 
-		m_flatColorShader.reset(new ac::Shader(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
+		m_flatColorShader.reset(ac::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
 
 	}
 
@@ -148,8 +152,8 @@ public:
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
-		glm::vec4 redColor(0.8f, 0.2f, 0.3f, 1.0f);
-		glm::vec4 blueColor(0.2f, 0.3f, 0.8f, 1.0f);
+		std::dynamic_pointer_cast<ac::OpenGLShader>(m_flatColorShader)->Bind();
+		std::dynamic_pointer_cast<ac::OpenGLShader>(m_flatColorShader)->UploadUniformFloat3("u_Color",m_SquareColor);
 
 		for (int y = 0; y < 20; y++)
 		{
@@ -157,11 +161,6 @@ public:
 			{
 				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-				if (x % 2 == 0)
-					m_flatColorShader->UploadUniformFloat4("u_Color",redColor);
-				else
-					m_flatColorShader->UploadUniformFloat4("u_Color",blueColor);
-
 				ac::Renderer::Submit(m_flatColorShader, m_SquareVA, transform);
 			}
 		}
@@ -173,7 +172,9 @@ public:
 
 	virtual void OnImGuiRender() override
 	{
-		
+		ImGui::Begin("Settings");
+		ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
+		ImGui::End();
 	}
 
 	void OnEvent(ac::Event& event) override
@@ -181,18 +182,20 @@ public:
 	}
 
 private:
-	std::shared_ptr<ac::Shader> m_Shader;
-	std::shared_ptr<ac::VertexArray> m_VertexArray;
+	ac::Ref<ac::Shader> m_Shader;
+	ac::Ref<ac::VertexArray> m_VertexArray;
 
-	std::shared_ptr<ac::Shader> m_flatColorShader;
-	std::shared_ptr<ac::VertexArray> m_SquareVA;
+	ac::Ref<ac::Shader> m_flatColorShader;
+	ac::Ref<ac::VertexArray> m_SquareVA;
 
 	ac::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
 	float m_CameraRotation;
 
 	float m_CameraMoveSpeed = 5.0f;
-	float m_CameraRotationSpeed = 30.0f;
+	float m_CameraRotationSpeed = 100.0f;
+
+	glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.7f };
 };
 
 class App : public ac::Application
@@ -201,7 +204,6 @@ public:
 	App() 
 	{
 		PushLayer(new ExampleLayer());
-
 	}
 	~App() {}
 };
