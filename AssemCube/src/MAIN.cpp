@@ -2,19 +2,13 @@
 
 #include "imguiV/imgui.h"
 
-#include <glm/vec3.hpp> // glm::vec3
-#include <glm/vec4.hpp> // glm::vec4
-#include <glm/mat4x4.hpp> // glm::mat4
-#include <glm/ext/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale
-#include <glm/ext/matrix_clip_space.hpp> // glm::perspective
-#include <glm/ext/scalar_constants.hpp> // glm::pi
+#include <glm/gtc/matrix_transform.hpp>
 
 class ExampleLayer : public ac::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f), m_Angle(0.0f)
-	{
+		: Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f), m_CameraRotation(0.0f)	{
 		m_VertexArray.reset(ac::VertexArray::Create());
 
 		float vertices[3 * 7] = {
@@ -39,10 +33,10 @@ public:
 		m_SquareVA.reset(ac::VertexArray::Create());
 
 		float squareVertices[3 * 4] = {
-			-0.75f, -0.75f, 0.0f,
-			 0.75f, -0.75f, 0.0f,
-			 0.75f,  0.75f, 0.0f,
-			-0.75f,  0.75f, 0.0f
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			 0.5f,  0.5f, 0.0f,
+			-0.5f,  0.5f, 0.0f
 		};
 
 		std::shared_ptr<ac::VertexBuffer> squareVB;
@@ -64,13 +58,14 @@ public:
 			layout(location = 1) in vec4 a_Color;
 
 			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
 
 			out vec3 v_Pos;
 			out vec4 v_Color;
 
 			void main()
 			{
-				gl_Position = u_ViewProjection * vec4(a_Pos,1.0f);
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Pos,1.0f);
 				v_Pos = a_Pos;			
 				v_Color = a_Color;
 			}
@@ -99,12 +94,13 @@ public:
 			layout(location = 0) in vec3 a_Position;
 
 			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;			
 
 			out vec3 v_Position;
 			void main()
 			{
 				v_Position = a_Position;
-				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);	
+				gl_Position = u_ViewProjection * u_Transform *vec4(a_Position, 1.0);	
 			}
 		)";
 
@@ -126,28 +122,39 @@ public:
 	void OnUpdate(ac::Timestep ts) override
 	{
 		if (ac::Input::IsKeyPressed(AC_KEY_LEFT))
-			m_CameraPosition.x -= m_CameraPositionSpeed * ts;
+			m_CameraPosition.x -= m_CameraMoveSpeed * ts;
 		else if (ac::Input::IsKeyPressed(AC_KEY_RIGHT))
-			m_CameraPosition.x += m_CameraPositionSpeed * ts;
+			m_CameraPosition.x += m_CameraMoveSpeed * ts;
 		if (ac::Input::IsKeyPressed(AC_KEY_UP))
-			m_CameraPosition.y += m_CameraPositionSpeed * ts;
+			m_CameraPosition.y += m_CameraMoveSpeed * ts;
 		else if (ac::Input::IsKeyPressed(AC_KEY_DOWN))
-			m_CameraPosition.y -= m_CameraPositionSpeed * ts;
+			m_CameraPosition.y -= m_CameraMoveSpeed * ts;
 		
 		if (ac::Input::IsKeyPressed(AC_KEY_Q))
-			m_Angle += m_CameraRotationSpeed * ts;
+			m_CameraRotation += m_CameraRotationSpeed * ts;
 		else if (ac::Input::IsKeyPressed(AC_KEY_E))
-			m_Angle -= m_CameraRotationSpeed * ts;
+			m_CameraRotation -= m_CameraRotationSpeed * ts;
 
 		ac::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		ac::RenderCommand::Clear();
 
 		m_Camera.SetPosition(m_CameraPosition);
-		m_Camera.SetRotation(m_Angle);
+		m_Camera.SetRotation(m_CameraRotation);
 
 		ac::Renderer::BeginScene(m_Camera);
 
-		ac::Renderer::Submit(m_BlueShader, m_SquareVA);
+		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+
+		for (int y = 0; y < 20; y++)
+		{
+			for (int x = 0; x < 20; x++)
+			{
+				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
+				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
+				ac::Renderer::Submit(m_BlueShader, m_SquareVA, transform);
+			}
+		}
+
 		ac::Renderer::Submit(m_Shader, m_VertexArray);
 
 		ac::Renderer::EndScene();
@@ -171,9 +178,9 @@ private:
 
 	ac::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
-	float m_Angle;
+	float m_CameraRotation;
 
-	float m_CameraPositionSpeed = 5.0f;
+	float m_CameraMoveSpeed = 5.0f;
 	float m_CameraRotationSpeed = 30.0f;
 };
 
