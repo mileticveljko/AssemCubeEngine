@@ -36,17 +36,18 @@ public:
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 		m_SquareVA.reset(ac::VertexArray::Create());
 
-		float squareVertices[3 * 4] = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f
+		float squareVertices[] = {
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 		};
 
 		ac::Ref<ac::VertexBuffer> squareVB;
 		squareVB.reset(ac::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 		squareVB->SetLayout({
-			{ ac::ShaderDataType::Float3, "a_Position" }
+			{ ac::ShaderDataType::Float3, "a_Position" },
+			{ ac::ShaderDataType::Float2, "a_TexCoord" }
 			});
 		m_SquareVA->AddVertexBuffer(squareVB);
 
@@ -124,6 +125,44 @@ public:
 
 		m_flatColorShader.reset(ac::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
 
+		std::string textureShaderVertexSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) in vec3 a_Position;
+			layout(location = 1) in vec2 a_TexCoord;
+
+			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;			
+
+			out vec2 v_TexCoord;
+			void main()
+			{
+				v_TexCoord = a_TexCoord;
+				gl_Position = u_ViewProjection * u_Transform *vec4(a_Position, 1.0);	
+			}
+		)";
+
+		std::string textureShaderFragmentSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) out vec4 color;
+			in vec2 v_TexCoord;
+
+			uniform sampler2D u_Texture;
+
+			void main()
+			{
+				color = texture(u_Texture, v_TexCoord);
+			}
+		)";
+
+		m_TextureShader.reset(ac::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
+
+		m_Texture = ac::Texture2D::Create("assets/textures/Checkerboard.png");
+
+		std::dynamic_pointer_cast<ac::OpenGLShader>(m_TextureShader)->Bind();
+		std::dynamic_pointer_cast<ac::OpenGLShader>(m_TextureShader)->UploadUniformInt1("u_Texture", 0);
+
 	}
 
 	void OnUpdate(ac::Timestep ts) override
@@ -165,7 +204,11 @@ public:
 			}
 		}
 
-		ac::Renderer::Submit(m_Shader, m_VertexArray);
+		m_Texture->Bind();
+		ac::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+
+
+		// ac::Renderer::Submit(m_Shader, m_VertexArray);
 
 		ac::Renderer::EndScene();
 	}
@@ -185,8 +228,10 @@ private:
 	ac::Ref<ac::Shader> m_Shader;
 	ac::Ref<ac::VertexArray> m_VertexArray;
 
-	ac::Ref<ac::Shader> m_flatColorShader;
+	ac::Ref<ac::Shader> m_flatColorShader, m_TextureShader;
 	ac::Ref<ac::VertexArray> m_SquareVA;
+
+	ac::Ref<ac::Texture2D> m_Texture;
 
 	ac::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
