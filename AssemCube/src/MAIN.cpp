@@ -159,6 +159,7 @@ public:
 		m_TextureShader.reset(ac::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
 
 		m_Texture = ac::Texture2D::Create("assets/textures/Checkerboard.png");
+		m_ChernoLogoTexture = ac::Texture2D::Create("assets/textures/ChernoLogo.png");
 
 		std::dynamic_pointer_cast<ac::OpenGLShader>(m_TextureShader)->Bind();
 		std::dynamic_pointer_cast<ac::OpenGLShader>(m_TextureShader)->UploadUniformInt1("u_Texture", 0);
@@ -205,6 +206,8 @@ public:
 		}
 
 		m_Texture->Bind();
+		ac::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));m_Texture->Bind();
+		m_ChernoLogoTexture->Bind();
 		ac::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 
@@ -231,7 +234,7 @@ private:
 	ac::Ref<ac::Shader> m_flatColorShader, m_TextureShader;
 	ac::Ref<ac::VertexArray> m_SquareVA;
 
-	ac::Ref<ac::Texture2D> m_Texture;
+	ac::Ref<ac::Texture2D> m_Texture, m_ChernoLogoTexture;
 
 	ac::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
