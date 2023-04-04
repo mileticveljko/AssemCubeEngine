@@ -91,79 +91,21 @@ public:
 			}
 		)";
 
-		m_Shader.reset(ac::Shader::Create(vertexSrc, fragmentSrc));
+		m_Shader = ac::Shader::Create("VertexPosColor", vertexSrc, fragmentSrc);
 
-		std::string flatColorShaderVertexSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) in vec3 a_Position;
+		
+		auto flatColorShader = m_ShaderLibrary.Load("assets/shaders/FlatColor.glsl");
 
-			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Transform;			
-
-			out vec3 v_Position;
-			void main()
-			{
-				v_Position = a_Position;
-				gl_Position = u_ViewProjection * u_Transform *vec4(a_Position, 1.0);	
-			}
-		)";
-
-		std::string flatColorShaderFragmentSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) out vec4 color;
-			in vec3 v_Position;
-
-			uniform vec3 u_Color;
-
-			void main()
-			{
-				color = vec4(u_Color , 1.0f);
-			}
-		)";
-
-		m_flatColorShader.reset(ac::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
-
-		std::string textureShaderVertexSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) in vec3 a_Position;
-			layout(location = 1) in vec2 a_TexCoord;
-
-			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Transform;			
-
-			out vec2 v_TexCoord;
-			void main()
-			{
-				v_TexCoord = a_TexCoord;
-				gl_Position = u_ViewProjection * u_Transform *vec4(a_Position, 1.0);	
-			}
-		)";
-
-		std::string textureShaderFragmentSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) out vec4 color;
-			in vec2 v_TexCoord;
-
-			uniform sampler2D u_Texture;
-
-			void main()
-			{
-				color = texture(u_Texture, v_TexCoord);
-			}
-		)";
-
-		m_TextureShader.reset(ac::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
+		auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
 
 		m_Texture = ac::Texture2D::Create("assets/textures/Checkerboard.png");
 		m_ChernoLogoTexture = ac::Texture2D::Create("assets/textures/ChernoLogo.png");
 
-		std::dynamic_pointer_cast<ac::OpenGLShader>(m_TextureShader)->Bind();
-		std::dynamic_pointer_cast<ac::OpenGLShader>(m_TextureShader)->UploadUniformInt1("u_Texture", 0);
+		std::dynamic_pointer_cast<ac::OpenGLShader>(textureShader)->Bind();
+		std::dynamic_pointer_cast<ac::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
 
+		std::dynamic_pointer_cast<ac::OpenGLShader>(flatColorShader)->Bind();
+		std::dynamic_pointer_cast<ac::OpenGLShader>(flatColorShader)->UploadUniformFloat3("u_Color", m_SquareColor);
 	}
 
 	void OnUpdate(ac::Timestep ts) override
@@ -192,8 +134,7 @@ public:
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
-		std::dynamic_pointer_cast<ac::OpenGLShader>(m_flatColorShader)->Bind();
-		std::dynamic_pointer_cast<ac::OpenGLShader>(m_flatColorShader)->UploadUniformFloat3("u_Color",m_SquareColor);
+		auto flatColorShader = m_ShaderLibrary.Get("FlatColor");
 
 		for (int y = 0; y < 20; y++)
 		{
@@ -201,14 +142,14 @@ public:
 			{
 				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-				ac::Renderer::Submit(m_flatColorShader, m_SquareVA, transform);
+				ac::Renderer::Submit(flatColorShader, m_SquareVA, transform);
 			}
 		}
-
+		auto textureShader = m_ShaderLibrary.Get("Texture");
 		m_Texture->Bind();
-		ac::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));m_Texture->Bind();
+		ac::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 		m_ChernoLogoTexture->Bind();
-		ac::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		ac::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 
 		// ac::Renderer::Submit(m_Shader, m_VertexArray);
@@ -228,10 +169,10 @@ public:
 	}
 
 private:
+	ac::ShaderLibrary m_ShaderLibrary;
 	ac::Ref<ac::Shader> m_Shader;
 	ac::Ref<ac::VertexArray> m_VertexArray;
 
-	ac::Ref<ac::Shader> m_flatColorShader, m_TextureShader;
 	ac::Ref<ac::VertexArray> m_SquareVA;
 
 	ac::Ref<ac::Texture2D> m_Texture, m_ChernoLogoTexture;
